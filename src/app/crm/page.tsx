@@ -1,4 +1,4 @@
-const AboutPage = () => {
+const CrmPage = () => {
   return (
     <div className="container mx-auto p-4">
       <h1 className="text-3xl font-bold">crm</h1>
@@ -7,4 +7,4 @@ const AboutPage = () => {
   );
 };
 
-export default AboutPage;
+export default CrmPage;

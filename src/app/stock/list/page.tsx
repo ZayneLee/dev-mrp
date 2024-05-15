@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import axios from "axios";
+import { useEffect, useState } from "react";
 
 type Stock = {
   id: number;
@@ -12,15 +12,11 @@ type Stock = {
   createdAt: Date;
 };
 
-interface StockListProps {
-  stocks: Stock[];
-  setStocks: React.Dispatch<React.SetStateAction<Stock[]>>;
-}
-
-export default function StockList({ stocks, setStocks }: StockListProps) {
+export default function StockList() {
   const [currentPage, setCurrentPage] = useState(1);
   const stocksPerPage = 10;
   const [searchQuery, setSearchQuery] = useState("");
+  const [stocks, setStocks] = useState<Stock[]>([]);
 
   useEffect(() => {
     const fetchStocks = async () => {
@@ -68,7 +64,8 @@ export default function StockList({ stocks, setStocks }: StockListProps) {
   };
 
   return (
-    <div>
+    <div className="container mx-auto p-4">
+      <h1 className="text-3xl font-bold underline mb-4">Stock List</h1>
       <h1 className="text-2xl font-bold mb-4">Search Stock</h1>
       <input
         type="text"

@@ -2,7 +2,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import { OkPacket, RowDataPacket } from "mysql2";
 import connection from "../../../lib/db";
 
-type Stock = {
+export type Stock = {
   id: number;
   code: string;
   description: string;
@@ -11,9 +11,17 @@ type Stock = {
   createdAt: Date;
 };
 
+export type StockLevel = {
+  id: number;
+  stock_id: number;
+  location: string;
+  dateCode: string;
+  qty: number;
+};
+
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<Stock[] | { message: string } | Stock>
+  res: NextApiResponse<Stock | Stock[] | { message: string }>
 ) {
   if (req.method === "GET") {
     try {
@@ -25,21 +33,41 @@ export default async function handler(
       res.status(500).json({ message: "Server error" });
     }
   } else if (req.method === "POST") {
-    const { code, description, manufacturer, qty } = req.body;
+    const { code, description, manufacturer, qty, stockLevels } = req.body;
+
+    let conn;
+
     try {
-      const [result] = await connection.query<OkPacket>(
+      conn = await connection.getConnection();
+      await conn.beginTransaction();
+
+      const [result] = await conn.query<OkPacket>(
         "INSERT INTO stocks (code, description, manufacturer, qty) VALUES (?, ?, ?, ?)",
         [code, description, manufacturer, qty]
       );
 
-      const [newStock] = await connection.query<RowDataPacket[]>(
+      const stockId = result.insertId;
+
+      for (const level of stockLevels) {
+        await conn.query<OkPacket>(
+          "INSERT INTO stock_levels (stock_id, location, dateCode, qty) VALUES (?, ?, ?, ?)",
+          [stockId, level.location, level.dateCode, level.qty]
+        );
+      }
+
+      const [newStock] = await conn.query<RowDataPacket[]>(
         "SELECT * FROM stocks WHERE id = ?",
-        [result.insertId]
+        [stockId]
       );
+
+      await conn.commit();
 
       res.status(201).json(newStock[0] as Stock);
     } catch (error) {
+      if (conn) await conn.rollback();
       res.status(500).json({ message: "Server error" });
+    } finally {
+      if (conn) conn.release();
     }
   } else {
     res.status(405).json({ message: "Method not allowed" });

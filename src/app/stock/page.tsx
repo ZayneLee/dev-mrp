@@ -1,9 +1,9 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import AddStock from "@/components/AddStock";
 import StockList from "@/components/StockList";
 import Head from "next/head";
+import { useState } from "react";
 
 type Stock = {
   id: number;
@@ -14,7 +14,7 @@ type Stock = {
   createdAt: Date;
 };
 
-export default function Home() {
+const StockPage = () => {
   const [stocks, setStocks] = useState<Stock[]>([]);
 
   return (
@@ -27,4 +27,6 @@ export default function Home() {
       <StockList stocks={stocks} setStocks={setStocks} />
     </div>
   );
-}
+};
+
+export default StockPage;
