@@ -1,4 +1,5 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+MRP System
+This project is an MRP (Material Requirements Planning) system built using modern web development technologies including React, TypeScript, Tailwind CSS, Next.js, and MySQL. The project start date is May 15, 2024.
 
 ## Getting Started
 
