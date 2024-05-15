@@ -120,6 +120,17 @@ export default function StockList({ stocks, setStocks }: StockListProps) {
           </tbody>
         </table>
         <div className="flex justify-center mt-4">
+          <button
+            onClick={() => handlePageChange(1)}
+            className={`mx-1 px-3 py-1 rounded ${
+              currentPage === 1
+                ? "bg-gray-300 text-gray-700"
+                : "bg-blue-500 text-white"
+            }`}
+            disabled={currentPage === 1}
+          >
+            {"<"}
+          </button>
           {Array.from({ length: totalPages }, (_, index) => (
             <button
               key={index + 1}
@@ -133,6 +144,17 @@ export default function StockList({ stocks, setStocks }: StockListProps) {
               {index + 1}
             </button>
           ))}
+          <button
+            onClick={() => handlePageChange(totalPages)}
+            className={`mx-1 px-3 py-1 rounded ${
+              currentPage === totalPages
+                ? "bg-gray-300 text-gray-700"
+                : "bg-blue-500 text-white"
+            }`}
+            disabled={currentPage === totalPages}
+          >
+            {">"}
+          </button>
         </div>
       </div>
     </div>
