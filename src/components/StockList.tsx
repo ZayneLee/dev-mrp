@@ -18,6 +18,10 @@ interface StockListProps {
 }
 
 export default function StockList({ stocks, setStocks }: StockListProps) {
+  const [currentPage, setCurrentPage] = useState(1);
+  const stocksPerPage = 10;
+  const [searchQuery, setSearchQuery] = useState("");
+
   useEffect(() => {
     const fetchStocks = async () => {
       const response = await axios.get("/api/stocks");
@@ -36,9 +40,41 @@ export default function StockList({ stocks, setStocks }: StockListProps) {
     console.log(`Edit stock with id: ${id}`);
   };
 
+  // Filter stocks by search query
+  const filteredStocks = stocks.filter(
+    (stock) =>
+      stock.code.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      stock.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      stock.manufacturer.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  // Sort stocks by createdAt in descending order
+  const sortedStocks = [...filteredStocks].sort(
+    (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+  );
+
+  // Calculate stocks to display for the current page
+  const indexOfLastStock = currentPage * stocksPerPage;
+  const indexOfFirstStock = indexOfLastStock - stocksPerPage;
+  const currentStocks = sortedStocks.slice(indexOfFirstStock, indexOfLastStock);
+
+  // Calculate total pages
+  const totalPages = Math.ceil(filteredStocks.length / stocksPerPage);
+
+  const handlePageChange = (pageNumber: number) => {
+    setCurrentPage(pageNumber);
+  };
+
   return (
     <div>
       <h1 className="text-2xl font-bold mb-4">Stock List</h1>
+      <input
+        type="text"
+        placeholder="Search..."
+        value={searchQuery}
+        onChange={(e) => setSearchQuery(e.target.value)}
+        className="border p-2 mb-4 rounded w-full"
+      />
       <div className="overflow-x-auto mt-4">
         <table className="min-w-full bg-white shadow-md rounded-lg">
           <thead>
@@ -52,7 +88,7 @@ export default function StockList({ stocks, setStocks }: StockListProps) {
             </tr>
           </thead>
           <tbody>
-            {stocks.map((stock) => (
+            {currentStocks.map((stock) => (
               <tr key={stock.id}>
                 <td className="py-2 px-4 border-b text-center">{stock.code}</td>
                 <td className="py-2 px-4 border-b text-center">
@@ -83,6 +119,21 @@ export default function StockList({ stocks, setStocks }: StockListProps) {
             ))}
           </tbody>
         </table>
+        <div className="flex justify-center mt-4">
+          {Array.from({ length: totalPages }, (_, index) => (
+            <button
+              key={index + 1}
+              onClick={() => handlePageChange(index + 1)}
+              className={`mx-1 px-3 py-1 rounded ${
+                currentPage === index + 1
+                  ? "bg-blue-500 text-white"
+                  : "bg-gray-300 text-gray-700"
+              }`}
+            >
+              {index + 1}
+            </button>
+          ))}
+        </div>
       </div>
     </div>
   );

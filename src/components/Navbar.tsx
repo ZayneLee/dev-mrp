@@ -17,32 +17,32 @@ const Navbar = () => {
               Dashboard
             </a>
           </Link>
-          <Link href="/add" legacyBehavior>
-            <a className="text-gray-300 hover:text-white transition duration-300">
-              CRM
-            </a>
-          </Link>
-          <Link href="/about" legacyBehavior>
-            <a className="text-gray-300 hover:text-white transition duration-300">
-              My Production Plan
-            </a>
-          </Link>
-          <Link href="/about" legacyBehavior>
-            <a className="text-gray-300 hover:text-white transition duration-300">
-              Production Planning
-            </a>
-          </Link>
           <Link href="/stock" legacyBehavior>
             <a className="text-gray-300 hover:text-white transition duration-300">
               Stock
             </a>
           </Link>
-          <Link href="/about" legacyBehavior>
+          <Link href="/quotes" legacyBehavior>
             <a className="text-gray-300 hover:text-white transition duration-300">
-              Procurement
+              Quotes
             </a>
           </Link>
-          <Link href="/about" legacyBehavior>
+          <Link href="/mrp" legacyBehavior>
+            <a className="text-gray-300 hover:text-white transition duration-300">
+              MRP
+            </a>
+          </Link>
+          <Link href="/qa" legacyBehavior>
+            <a className="text-gray-300 hover:text-white transition duration-300">
+              QA
+            </a>
+          </Link>
+          <Link href="/crm" legacyBehavior>
+            <a className="text-gray-300 hover:text-white transition duration-300">
+              CRM
+            </a>
+          </Link>
+          <Link href="/setting" legacyBehavior>
             <a className="text-gray-300 hover:text-white transition duration-300">
               Setting
             </a>
