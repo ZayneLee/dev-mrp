@@ -67,7 +67,7 @@ export default function StockList({ stocks, setStocks }: StockListProps) {
 
   return (
     <div>
-      <h1 className="text-2xl font-bold mb-4">Stock List</h1>
+      <h1 className="text-2xl font-bold mb-4">Search Stock</h1>
       <input
         type="text"
         placeholder="Search..."
