@@ -101,6 +101,11 @@ export default function AddStock() {
     ]);
   };
 
+  const removeStockLevel = (index: number) => {
+    const updatedStockLevels = stockLevels.filter((_, i) => i !== index);
+    setStockLevels(updatedStockLevels);
+  };
+
   return (
     <div className="container mx-auto p-4">
       <h1 className="text-3xl font-bold underline mb-4">Add Stock</h1>
@@ -144,7 +149,7 @@ export default function AddStock() {
         {stockLevels.map((level, index) => (
           <div
             key={index}
-            className="mb-4 grid grid-cols-1 md:grid-cols-3 gap-4"
+            className="mb-4 grid grid-cols-1 md:grid-cols-4 gap-4 items-center"
           >
             <input
               type="text"
@@ -170,6 +175,12 @@ export default function AddStock() {
               placeholder="Quantity"
               className="border p-2 rounded"
             />
+            <button
+              onClick={() => removeStockLevel(index)}
+              className="bg-red-500 text-white px-2 py-1 rounded w-10"
+            >
+              x
+            </button>
           </div>
         ))}
         <button
