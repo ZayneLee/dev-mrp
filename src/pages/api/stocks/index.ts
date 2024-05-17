@@ -9,6 +9,7 @@ export type Stock = {
   manufacturer: string;
   qty: number;
   createdAt: Date;
+  stockLevels?: StockLevel[];
 };
 
 export type StockLevel = {
@@ -26,7 +27,7 @@ export default async function handler(
   if (req.method === "GET") {
     try {
       const [rows] = await connection.query<RowDataPacket[]>(
-        "SELECT * FROM stocks"
+        "SELECT * FROM stock"
       );
       res.status(200).json(rows as Stock[]);
     } catch (error) {
@@ -42,7 +43,7 @@ export default async function handler(
       await conn.beginTransaction();
 
       const [result] = await conn.query<OkPacket>(
-        "INSERT INTO stocks (code, description, manufacturer, qty) VALUES (?, ?, ?, ?)",
+        "INSERT INTO stock (code, description, manufacturer, qty) VALUES (?, ?, ?, ?)",
         [code, description, manufacturer, qty]
       );
 
@@ -50,13 +51,13 @@ export default async function handler(
 
       for (const level of stockLevels) {
         await conn.query<OkPacket>(
-          "INSERT INTO stock_levels (stock_id, location, dateCode, qty) VALUES (?, ?, ?, ?)",
+          "INSERT INTO stock_level (stock_id, location, dateCode, qty) VALUES (?, ?, ?, ?)",
           [stockId, level.location, level.dateCode, level.qty]
         );
       }
 
       const [newStock] = await conn.query<RowDataPacket[]>(
-        "SELECT * FROM stocks WHERE id = ?",
+        "SELECT * FROM stock WHERE id = ?",
         [stockId]
       );
 

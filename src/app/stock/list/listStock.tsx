@@ -1,7 +1,8 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import axios from "axios";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 
 type Stock = {
   id: number;
@@ -12,15 +13,12 @@ type Stock = {
   createdAt: Date;
 };
 
-interface StockListProps {
-  stocks: Stock[];
-  setStocks: React.Dispatch<React.SetStateAction<Stock[]>>;
-}
-
-export default function StockList({ stocks, setStocks }: StockListProps) {
+export default function ListStock() {
+  const router = useRouter();
   const [currentPage, setCurrentPage] = useState(1);
   const stocksPerPage = 10;
   const [searchQuery, setSearchQuery] = useState("");
+  const [stocks, setStocks] = useState<Stock[]>([]);
 
   useEffect(() => {
     const fetchStocks = async () => {
@@ -28,7 +26,7 @@ export default function StockList({ stocks, setStocks }: StockListProps) {
       setStocks(response.data);
     };
     fetchStocks();
-  }, [setStocks]);
+  }, []);
 
   const deleteStock = async (id: number) => {
     if (confirm("Are you sure you want to delete this stock?")) {
@@ -38,8 +36,7 @@ export default function StockList({ stocks, setStocks }: StockListProps) {
   };
 
   const editStock = (id: number) => {
-    // Implement edit functionality here
-    console.log(`Edit stock with id: ${id}`);
+    router.push(`/stock/edit/${id}`);
   };
 
   // Filter stocks by search query
@@ -68,7 +65,8 @@ export default function StockList({ stocks, setStocks }: StockListProps) {
   };
 
   return (
-    <div>
+    <div className="container mx-auto p-4">
+      <h1 className="text-3xl font-bold underline mb-4">Stock List</h1>
       <h1 className="text-2xl font-bold mb-4">Search Stock</h1>
       <input
         type="text"
