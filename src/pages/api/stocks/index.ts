@@ -8,6 +8,7 @@ export type Stock = {
   description: string;
   manufacturer: string;
   qty: number;
+  delete_flag: string;
   createdAt: Date;
   stockLevels?: StockLevel[];
 };
@@ -18,6 +19,7 @@ export type StockLevel = {
   location: string;
   dateCode: string;
   qty: number;
+  delete_flag: string;
 };
 
 export default async function handler(

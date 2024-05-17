@@ -3,24 +3,7 @@
 import { useState, useEffect } from "react";
 import { useRouter, useParams } from "next/navigation";
 import axios from "axios";
-
-type Stock = {
-  id: number;
-  code: string;
-  description: string;
-  manufacturer: string;
-  qty: number;
-  createdAt: Date;
-  stockLevels: StockLevel[];
-};
-
-type StockLevel = {
-  id: number;
-  stock_id: number;
-  location: string;
-  dateCode: string;
-  qty: number;
-};
+import { Stock, StockLevel } from "@/pages/api/stocks";
 
 export default function EditStock() {
   const router = useRouter();
@@ -33,6 +16,7 @@ export default function EditStock() {
     description: "",
     manufacturer: "",
     qty: 0,
+    delete_flag: "",
     createdAt: new Date(),
     stockLevels: [],
   });
@@ -104,7 +88,14 @@ export default function EditStock() {
   const addStockLevel = () => {
     setStockLevels([
       ...stockLevels,
-      { id: 0, stock_id: 0, location: "", dateCode: "", qty: 0 },
+      {
+        id: 0,
+        stock_id: 0,
+        location: "",
+        dateCode: "",
+        qty: 0,
+        delete_flag: "",
+      },
     ]);
   };
 

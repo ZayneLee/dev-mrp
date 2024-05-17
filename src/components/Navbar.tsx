@@ -4,19 +4,19 @@ import { useState, useRef } from "react";
 import Link from "next/link";
 
 const Navbar = () => {
-  const [isStockDropdownOpen, setIsStockDropdownOpen] = useState(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const showDropdown = () => {
     if (timeoutRef.current) {
       clearTimeout(timeoutRef.current);
     }
-    setIsStockDropdownOpen(true);
+    setIsDropdownOpen(true);
   };
 
   const hideDropdown = () => {
     timeoutRef.current = setTimeout(() => {
-      setIsStockDropdownOpen(false);
+      setIsDropdownOpen(false);
     }, 100);
   };
 
@@ -36,34 +36,34 @@ const Navbar = () => {
               Dashboard
             </a>
           </Link>
+          <Link href="/stock/list" legacyBehavior>
+            <a className="text-gray-300 hover:text-white transition duration-300">
+              Stock
+            </a>
+          </Link>
           <div
             className="relative"
             onMouseEnter={showDropdown}
             onMouseLeave={hideDropdown}
           >
             <button className="text-gray-300 hover:text-white transition duration-300 focus:outline-none">
-              Stock
+              Quotes
             </button>
-            {isStockDropdownOpen && (
+            {isDropdownOpen && (
               <div className="absolute left-0 mt-2 w-48 bg-white shadow-lg rounded-lg py-2 z-20">
                 <Link href="/stock/list" legacyBehavior>
                   <a className="block px-4 py-2 text-gray-800 hover:bg-gray-200">
-                    Stock List
+                    Quote List
                   </a>
                 </Link>
                 <Link href="/stock/add" legacyBehavior>
                   <a className="block px-4 py-2 text-gray-800 hover:bg-gray-200">
-                    Add Stock
+                    Add Quote
                   </a>
                 </Link>
               </div>
             )}
           </div>
-          <Link href="/quotes" legacyBehavior>
-            <a className="text-gray-300 hover:text-white transition duration-300">
-              Quotes
-            </a>
-          </Link>
           <Link href="/mrp" legacyBehavior>
             <a className="text-gray-300 hover:text-white transition duration-300">
               MRP

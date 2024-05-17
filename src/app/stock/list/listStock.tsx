@@ -3,15 +3,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-
-type Stock = {
-  id: number;
-  code: string;
-  description: string;
-  manufacturer: string;
-  qty: number;
-  createdAt: Date;
-};
+import { Stock } from "@/pages/api/stocks";
 
 export default function ListStock() {
   const router = useRouter();
@@ -23,7 +15,10 @@ export default function ListStock() {
   useEffect(() => {
     const fetchStocks = async () => {
       const response = await axios.get("/api/stocks");
-      setStocks(response.data);
+      const fetchedStocks = response.data.filter(
+        (stock: Stock) => stock.delete_flag !== "Y"
+      );
+      setStocks(fetchedStocks);
     };
     fetchStocks();
   }, []);
@@ -37,6 +32,10 @@ export default function ListStock() {
 
   const editStock = (id: number) => {
     router.push(`/stock/edit/${id}`);
+  };
+
+  const addStock = () => {
+    router.push(`/stock/add`);
   };
 
   // Filter stocks by search query
@@ -67,7 +66,15 @@ export default function ListStock() {
   return (
     <div className="container mx-auto p-4">
       <h1 className="text-3xl font-bold underline mb-4">Stock List</h1>
-      <h1 className="text-2xl font-bold mb-4">Search Stock</h1>
+      <div className="flex justify-between items-center mb-4">
+        <h2 className="text-2xl font-bold">Search Stock</h2>
+        <button
+          onClick={addStock}
+          className="bg-green-500 text-white px-4 py-2 rounded"
+        >
+          Add Stock
+        </button>
+      </div>
       <input
         type="text"
         placeholder="Search..."

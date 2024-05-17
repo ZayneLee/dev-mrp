@@ -10,10 +10,9 @@ export default async function handler(
   const { id } = req.query;
 
   if (req.method === "GET") {
-    console.log("id", id);
     try {
       const [rows] = await connection.query<RowDataPacket[]>(
-        "SELECT * FROM stock WHERE id = ?",
+        "SELECT * FROM stock WHERE id = ? AND delete_flag != 'Y'",
         [id]
       );
 
@@ -22,7 +21,7 @@ export default async function handler(
       }
 
       const [stockLevels] = await connection.query<RowDataPacket[]>(
-        "SELECT * FROM stock_level WHERE stock_id = ?",
+        "SELECT * FROM stock_level WHERE stock_id = ? AND delete_flag != 'Y'",
         [id]
       );
 
@@ -50,10 +49,9 @@ export default async function handler(
         [code, description, manufacturer, qty, id]
       );
 
-      await conn.query<OkPacket>(
-        "DELETE FROM stock_level WHERE stock_id = ?",
-        [id]
-      );
+      await conn.query<OkPacket>("DELETE FROM stock_level WHERE stock_id = ?", [
+        id,
+      ]);
 
       for (const level of stockLevels) {
         await conn.query<OkPacket>(
@@ -87,10 +85,13 @@ export default async function handler(
     }
   } else if (req.method === "DELETE") {
     try {
-      await connection.query("DELETE FROM stocks WHERE id = ?", [id]);
-      res.status(200).json({ message: "Stock deleted" });
+      await connection.query(
+        "UPDATE stock SET delete_flag = 'Y' WHERE id = ?",
+        [id]
+      );
+      res.status(200).json({ message: "Stock flagged as deleted" });
     } catch (error) {
-      console.error("Error deleting stock:", error);
+      console.error("Error updating delete flag:", error);
       res.status(500).json({ message: "Server error" });
     }
   } else {

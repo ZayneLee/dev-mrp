@@ -11,6 +11,7 @@ export default function AddStock() {
     description: "",
     manufacturer: "",
     qty: 0,
+    delete_flag: "",
     createdAt: new Date(),
   });
 
@@ -21,6 +22,7 @@ export default function AddStock() {
       location: "",
       dateCode: "",
       qty: 0,
+      delete_flag: "",
     },
   ]);
 
@@ -67,6 +69,7 @@ export default function AddStock() {
         description: "",
         manufacturer: "",
         qty: 0,
+        delete_flag: "",
         createdAt: new Date(),
       });
       setStockLevels([
@@ -76,6 +79,7 @@ export default function AddStock() {
           location: "",
           dateCode: "",
           qty: 0,
+          delete_flag: "",
         },
       ]);
     } catch (error) {
@@ -86,7 +90,14 @@ export default function AddStock() {
   const addStockLevel = () => {
     setStockLevels([
       ...stockLevels,
-      { id: 0, stock_id: 0, location: "", dateCode: "", qty: 0 },
+      {
+        id: 0,
+        stock_id: 0,
+        location: "",
+        dateCode: "",
+        qty: 0,
+        delete_flag: "",
+      },
     ]);
   };
 
