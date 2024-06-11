@@ -18,6 +18,13 @@
     "react-dom": "^18"
   },
   "devDependencies": {
+    "@fullcalendar/core": "^6.1.8",
+    "@fullcalendar/daygrid": "^6.1.8",
+    "@fullcalendar/interaction": "^6.1.8",
+    "@fullcalendar/react": "^6.1.8",
+    "@fullcalendar/timegrid": "^6.1.8",
+    "@headlessui/react": "^1.7.16",
+    "@heroicons/react": "^2.0.18",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
